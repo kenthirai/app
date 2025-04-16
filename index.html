@@ -19,6 +19,7 @@
             --border-radius: 8px;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --touch-target-min: 44px; /* Ukuran minimum untuk elemen yang bisa disentuh */
         }
         
         .dark-mode {
@@ -37,6 +38,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Menghilangkan highlight saat tap di mobile */
         }
         
         body {
@@ -44,11 +46,12 @@
             line-height: 1.6;
             color: var(--dark-color);
             background-color: #ecf0f1;
-            padding: 20px;
+            padding: 10px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             transition: background-color 0.3s ease, color 0.3s ease;
+            touch-action: manipulation; /* Meningkatkan responsivitas touch */
         }
         
         body.dark-mode {
@@ -64,6 +67,7 @@
             overflow: hidden;
             transition: background-color 0.3s ease;
             flex: 1;
+            width: 100%;
         }
         
         .dark-mode .container {
@@ -73,27 +77,27 @@
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             position: relative;
         }
         
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: clamp(1.5rem, 4vw, 2.2rem); /* Responsive font size */
+            margin-bottom: 8px;
         }
         
         .subtitle {
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
             opacity: 0.9;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .header-actions {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
         
@@ -101,14 +105,15 @@
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 10px 15px;
             border-radius: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
-            font-size: 0.85rem;
+            font-size: clamp(0.7rem, 3vw, 0.85rem);
             transition: var(--transition);
+            min-height: var(--touch-target-min);
         }
         
         .header-btn:hover {
@@ -121,18 +126,18 @@
         
         .main-content {
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: minmax(250px, 300px) 1fr;
+            gap: 15px;
+            padding: 15px;
         }
         
         .sidebar {
             background-color: var(--light-color);
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 15px;
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 15px;
             transition: background-color 0.3s ease;
         }
         
@@ -141,12 +146,12 @@
         }
         
         .control-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .control-group h3 {
             font-size: 1.1rem;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--primary-color);
             display: flex;
             align-items: center;
@@ -162,13 +167,14 @@
         
         select, input, textarea, button {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
             font-size: 0.95rem;
             transition: var(--transition);
             background-color: white;
             color: #333;
+            min-height: var(--touch-target-min);
         }
         
         .dark-mode select,
@@ -201,6 +207,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            min-height: var(--touch-target-min);
         }
         
         button:hover {
@@ -231,16 +238,18 @@
         }
         
         .prompt-btn {
-            padding: 6px 12px;
+            padding: 10px 12px;
             font-size: 0.8rem;
             width: auto;
             border-radius: 4px;
+            flex: 1;
+            min-height: var(--touch-target-min);
         }
         
         .results-area {
             background-color: white;
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 15px;
             transition: background-color 0.3s ease;
         }
         
@@ -251,7 +260,7 @@
         .loading {
             display: none;
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: var(--border-radius);
         }
@@ -276,7 +285,7 @@
         }
         
         .result-container {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .image-container {
@@ -327,15 +336,16 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            padding: 15px;
+            padding: 12px;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 8px;
             opacity: 0;
             transition: var(--transition);
         }
         
-        .image-container:hover .image-actions {
+        .image-container:hover .image-actions,
+        .image-container.touch-active .image-actions {
             opacity: 1;
         }
         
@@ -350,7 +360,8 @@
             z-index: 2;
         }
         
-        .image-container:hover .image-zoom-actions {
+        .image-container:hover .image-zoom-actions,
+        .image-container.touch-active .image-zoom-actions {
             opacity: 1;
         }
         
@@ -358,8 +369,8 @@
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -378,13 +389,14 @@
             color: white;
             border: none;
             width: auto;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border-radius: 20px;
             backdrop-filter: blur(5px);
             font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 5px;
+            min-height: var(--touch-target-min);
         }
         
         .action-btn:hover {
@@ -394,8 +406,8 @@
         
         .grid-view {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
         }
         
         .history-item {
@@ -406,6 +418,7 @@
             cursor: pointer;
             transition: var(--transition);
             margin-bottom: 8px;
+            min-height: var(--touch-target-min);
         }
         
         .history-item:hover {
@@ -447,14 +460,17 @@
             height: 100%;
             background-color: rgba(0,0,0,0.5);
             backdrop-filter: blur(3px);
+            overflow-y: auto;
+            padding: 15px;
+            box-sizing: border-box;
         }
         
         .modal-content {
             background-color: white;
             margin: 10% auto;
-            padding: 25px;
+            padding: 20px;
             border-radius: var(--border-radius);
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             position: relative;
@@ -472,6 +488,11 @@
             font-size: 1.5rem;
             color: var(--gray-color);
             cursor: pointer;
+            width: var(--touch-target-min);
+            height: var(--touch-target-min);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .close:hover {
@@ -481,7 +502,7 @@
         .tab-container {
             display: flex;
             border-bottom: 1px solid #eee;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .dark-mode .tab-container {
@@ -489,11 +510,15 @@
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 12px 15px;
             cursor: pointer;
             border-bottom: 3px solid transparent;
             font-weight: 500;
             transition: var(--transition);
+            min-height: var(--touch-target-min);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .tab.active {
@@ -524,13 +549,14 @@
             background: none;
             border: none;
             color: var(--dark-color);
-            padding: 5px 0;
+            padding: 10px 0;
             font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
             width: auto;
+            min-height: var(--touch-target-min);
         }
         
         .toggle-advanced i {
@@ -564,6 +590,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            max-width: calc(100% - 40px);
         }
         
         .notification.show {
@@ -598,8 +625,8 @@
         
         footer {
             text-align: center;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 15px;
+            margin-top: 15px;
             color: var(--dark-color);
             font-size: 0.9rem;
         }
@@ -616,13 +643,17 @@
         }
         
         .style-preset {
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
             font-size: 0.8rem;
             text-align: center;
+            min-height: var(--touch-target-min);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .style-preset:hover {
@@ -645,11 +676,12 @@
             gap: 8px;
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: var(--border-radius);
             text-decoration: none;
-            margin: 20px auto;
+            margin: 15px auto;
             transition: var(--transition);
+            min-height: var(--touch-target-min);
         }
         
         .back-button:hover {
@@ -661,8 +693,32 @@
         #nsfwFilter {
             width: auto;
             margin-right: 8px;
+            min-height: auto;
+            height: 18px;
+            width: 18px;
         }
         
+        /* Image Details Modal - Mobile Layout */
+        .image-details-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .image-details-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .image-details-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -678,6 +734,99 @@
             
             .style-presets {
                 grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 20px auto;
+                padding: 15px;
+            }
+            
+            .image-details-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-details-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-details-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-actions {
+                gap: 5px;
+            }
+            
+            .header-btn {
+                padding: 8px 12px;
+                flex: 1;
+                min-width: calc(50% - 5px);
+            }
+            
+            .prompt-actions {
+                flex-wrap: wrap;
+            }
+            
+            .prompt-btn {
+                min-width: calc(33.333% - 5px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                padding: 10px;
+            }
+            
+            .main-content {
+                padding: 10px;
+                gap: 10px;
+            }
+            
+            .header-btn {
+                min-width: 100%;
+            }
+            
+            .prompt-btn {
+                min-width: calc(50% - 4px);
+            }
+            
+            .action-btn {
+                padding: 8px;
+                font-size: 0.7rem;
+            }
+            
+            .zoom-btn {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        
+        /* Touch improvements */
+        @media (hover: none) {
+            .image-actions, 
+            .image-zoom-actions {
+                opacity: 1 !important; /* Always show actions on touch devices */
+            }
+            
+            .image-container {
+                touch-action: manipulation;
+            }
+            
+            button, .tab, .style-preset, .history-item {
+                transition: none;
+            }
+            
+            button:active, .tab:active, .style-preset:active, .history-item:active {
+                transform: scale(0.98);
+                opacity: 0.9;
             }
         }
     </style>
@@ -696,10 +845,10 @@
                     <i class="fas fa-trash-alt"></i> Clear All
                 </button>
                 <button class="header-btn" id="exportHistoryBtn">
-                    <i class="fas fa-file-export"></i> Export History
+                    <i class="fas fa-file-export"></i> Export
                 </button>
                 <button class="header-btn" id="importHistoryBtn">
-                    <i class="fas fa-file-import"></i> Import History
+                    <i class="fas fa-file-import"></i> Import
                 </button>
             </div>
         </header>
@@ -808,7 +957,7 @@
                     </div>
                     
                     <div class="control-group">
-                        <label for="nsfwFilter">
+                        <label for="nsfwFilter" style="display: flex; align-items: center;">
                             <input type="checkbox" id="nsfwFilter" checked> 
                             Strict NSFW Filtering (block unsafe content)
                         </label>
@@ -851,15 +1000,15 @@
         </div>
     </div>
     <div style="text-align: center;">
-            <a href="https://kenthir.my.id/tantangan.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> Kembali ke Tantangan
-            </a>
-        </div>
-        
-        <footer>
-            <p>&copy; <span id="currentYear"></span> Advanced AI Image Generator. All rights reserved.</p>
-            <p id="versionInfo">Version 2.1.0</p>
-        </footer>
+        <a href="https://kenthir.my.id/tantangan.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Kembali ke Tantangan
+        </a>
+    </div>
+    
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Advanced AI Image Generator. All rights reserved.</p>
+        <p id="versionInfo">Version 2.1.0</p>
+    </footer>
     
     <!-- API Key Modal -->
     <div id="apiKeyModal" class="modal">
@@ -887,21 +1036,20 @@
     <div id="imageDetailsModal" class="modal">
         <div class="modal-content" style="max-width: 800px;">
             <span class="close">&times;</span>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="image-details-container">
                 <div>
                     <img id="modalImage" src="" alt="Generated image" style="width: 100%; border-radius: var(--border-radius);">
                 </div>
-                <div>
-                    <h3>Image Details</h3>
-                    <div style="margin: 15px 0;">
+                <div class="image-details-info">
+                    <div>
                         <strong>Prompt:</strong>
                         <p id="modalPrompt" style="margin-top: 5px; background: var(--light-color); padding: 10px; border-radius: var(--border-radius);"></p>
                     </div>
-                    <div style="margin: 15px 0;">
+                    <div>
                         <strong>Negative Prompt:</strong>
                         <p id="modalNegativePrompt" style="margin-top: 5px; background: var(--light-color); padding: 10px; border-radius: var(--border-radius);"></p>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div>
                             <strong>Model:</strong>
                             <p id="modalModel"></p>
@@ -923,9 +1071,9 @@
                             <p id="modalStyle"></p>
                         </div>
                     </div>
-                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <div class="image-details-actions">
                         <button onclick="downloadCurrentModalImage()">
-                            <i class="fas fa-download"></i> Download Image
+                            <i class="fas fa-download"></i> Download
                         </button>
                         <button onclick="copyPromptToClipboard()">
                             <i class="fas fa-copy"></i> Copy Prompt
@@ -1029,7 +1177,8 @@
             currentGeneration: null,
             darkMode: localStorage.getItem('darkMode') === 'true',
             zoomLevel: 1,
-            currentImageZoom: null
+            currentImageZoom: null,
+            isTouchDevice: 'ontouchstart' in window || navigator.maxTouchPoints > 0
         };
         
         // Model Information
@@ -1082,6 +1231,11 @@
             renderSaved();
             setupEventListeners();
             updateModelInfo();
+            
+            // Add touch event listeners for better mobile interaction
+            if (state.isTouchDevice) {
+                setupTouchEvents();
+            }
         }
         
         // Event Listeners
@@ -1148,6 +1302,35 @@
                 if (e.key === 'Escape' && state.currentImageZoom) {
                     resetImageZoom(state.currentImageZoom);
                 }
+            });
+        }
+        
+        // Setup touch events for better mobile interaction
+        function setupTouchEvents() {
+            // Make image actions always visible on touch devices
+            document.querySelectorAll('.image-container').forEach(container => {
+                container.classList.add('touch-active');
+            });
+            
+            // Prevent long press from showing context menu on buttons
+            document.querySelectorAll('button, .history-item, .style-preset').forEach(el => {
+                el.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    return false;
+                });
+            });
+            
+            // Add touch feedback for buttons
+            document.querySelectorAll('button, .tab, .style-preset, .history-item').forEach(el => {
+                el.addEventListener('touchstart', () => {
+                    el.style.transform = 'scale(0.98)';
+                    el.style.opacity = '0.9';
+                }, { passive: true });
+                
+                el.addEventListener('touchend', () => {
+                    el.style.transform = '';
+                    el.style.opacity = '';
+                }, { passive: true });
             });
         }
         
@@ -1349,6 +1532,7 @@
         function displayGeneratedImage(generation) {
             const imageCard = document.createElement('div');
             imageCard.className = 'image-container';
+            if (state.isTouchDevice) imageCard.classList.add('touch-active');
             imageCard.dataset.id = generation.id;
             
             imageCard.innerHTML = `
@@ -1376,6 +1560,16 @@
                     </button>
                 </div>
             `;
+            
+            // Add touch event listeners for new image
+            if (state.isTouchDevice) {
+                const buttons = imageCard.querySelectorAll('button');
+                buttons.forEach(btn => {
+                    btn.addEventListener('touchstart', (e) => {
+                        e.stopPropagation(); // Prevent triggering the container's click event
+                    });
+                });
+            }
             
             elements.imageGrid.prepend(imageCard);
         }
